@@ -8,10 +8,12 @@ import com.adl.et.telco.mvno.productcatalog.application.config.Constants;
 import com.adl.et.telco.mvno.productcatalog.application.transport.request.entities.CatalogCreateRequestEntity;
 import com.adl.et.telco.mvno.productcatalog.application.transport.request.entities.CatalogUpdateRequestEntity;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.Catalog;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(tags = "catalog")
 @RequestMapping("${app.context.absolute}/" + Constants.UrlConstants.CATALOG_RESOURCE)
 public class CatalogController extends BaseResourceController<Catalog,
         CatalogCreateRequestEntity,

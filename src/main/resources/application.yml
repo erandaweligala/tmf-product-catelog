@@ -8,6 +8,7 @@ app:
     absolute: /tmf-api/productCatalogManagement/v4
     relative: /tmf-api/productCatalogManagement/v4
   swagger:
+    enabled: true
     title: Product Catalog Management
     description: "TMF API Reference: TMF620 - Product Catalog Management"
     version: 4.0.0
@@ -93,6 +94,10 @@ tmf.event:
     maxTotalConnectionPerRoute: 500
 
 spring:
+  mvc:
+    # springfox 2.x does not support the PathPatternParser based matching
+    pathmatch:
+      matching-strategy: ant_path_matcher
   kafka:
     producer:
       bootstrap-servers: b-2.telcomsk.aq9z29.c5.kafka.ap-southeast-1.amazonaws.com:9098,b-1.telcomsk.aq9z29.c5.kafka.ap-southeast-1.amazonaws.com:9098

@@ -7,10 +7,12 @@ import com.adl.et.telco.dte.mvno.plugin.tmf.domain.service.BaseResourceService;
 import com.adl.et.telco.mvno.productcatalog.application.config.Constants;
 import com.adl.et.telco.mvno.productcatalog.application.transport.request.entities.PricingLogicAlgorithmRequestEntity;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.PricingLogicAlgorithm;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(tags = "pricingLogicAlgorithmSpecification")
 @RequestMapping("${app.context.absolute}/" + Constants.UrlConstants.PRICING_LOGIC_ALGORITHM_SPECIFICATION_RESOURCE)
 public class PricingLogicAlgorithmSpecificationController extends BaseResourceController<PricingLogicAlgorithm,
         PricingLogicAlgorithmRequestEntity,

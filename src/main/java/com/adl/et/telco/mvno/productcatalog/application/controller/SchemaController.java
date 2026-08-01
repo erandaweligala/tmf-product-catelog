@@ -9,6 +9,7 @@ import com.adl.et.telco.mvno.productcatalog.application.transport.request.entiti
 import com.adl.et.telco.mvno.productcatalog.domain.entities.SchemaEntity;
 import com.adl.et.telco.mvno.productcatalog.domain.service.SchemaService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@Api(tags = "schema")
 @RequestMapping("${app.context.absolute}/" + Constants.UrlConstants.SCHEMA_RESOURCE)
 public class SchemaController extends BaseResourceController<SchemaEntity,
         SchemaCreateRequestEntity,

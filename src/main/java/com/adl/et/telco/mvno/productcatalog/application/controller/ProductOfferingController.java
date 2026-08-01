@@ -8,10 +8,12 @@ import com.adl.et.telco.mvno.productcatalog.application.transport.request.entiti
 import com.adl.et.telco.mvno.productcatalog.application.transport.request.entities.ProductOfferingUpdateRequestEntity;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.ProductOffering;
 import com.adl.et.telco.mvno.productcatalog.domain.service.ProductOfferingService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(tags = "productOffering")
 @RequestMapping("${app.context.absolute}/" + Constants.UrlConstants.PRODUCT_OFFERING_RESOURCE)
 public class ProductOfferingController extends BaseResourceController<ProductOffering,
         ProductOfferingCreateRequestEntity,

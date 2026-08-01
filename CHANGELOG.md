@@ -29,3 +29,8 @@
 ## [1.0.6] - 2023-09-26
 ### Bug fix
 - remove validation product offering update
+
+## [1.0.7]
+### Swagger endpoint
+- expose generated API documentation on `/v2/api-docs` and the Swagger UI on `/swagger-ui.html`
+- documentation metadata read from `app.swagger.*`, can be switched off with `app.swagger.enabled: false`

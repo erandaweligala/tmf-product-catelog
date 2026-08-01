@@ -99,3 +99,21 @@ Eg:
 | Parameter | Description | Example |
 | ----------- | ----------- | --------- |
 | id | ID of the resource. | 60af164dc87b5a2d626ce0f3 |
+## API documentation (Swagger)
+
+The running service publishes its own API documentation, generated from the resource controllers.
+
+| Endpoint | Description |
+| ----------- | ----------- |
+| /v2/api-docs | Swagger 2.0 definition in JSON |
+| /swagger-ui.html | Swagger UI |
+
+Eg:
+> http://localhost:31001/swagger-ui.html
+
+The title, description and version shown in the documentation come from `app.swagger.*` in the
+active `application-{profile}.yml`. Set `app.swagger.enabled: false` to disable both endpoints in a
+given environment.
+
+**NOTE** : these endpoints are served from the server root, not from `app.context.absolute`.
+The committed `docs/swagger.yaml` remains the TMF620 reference contract for the API.

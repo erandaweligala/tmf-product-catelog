@@ -8,10 +8,12 @@ import com.adl.et.telco.mvno.productcatalog.application.transport.request.entiti
 import com.adl.et.telco.mvno.productcatalog.application.transport.request.entities.ProductSpecificationUpdateRequestEntity;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.ProductSpecification;
 import com.adl.et.telco.mvno.productcatalog.domain.service.ProductSpecificationService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(tags = "productSpecification")
 @RequestMapping("${app.context.absolute}/" + Constants.UrlConstants.PRODUCT_SPECIFICATION_RESOURCE)
 public class ProductSpecificationController extends BaseResourceController<ProductSpecification,
         ProductSpecificationCreateRequestEntity,
