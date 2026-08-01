@@ -14,7 +14,7 @@ class ProductSpecificationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        productSpecificationRepository = new ProductSpecificationRepository(null); // Pass null or mock MongoTemplate object
+        productSpecificationRepository = new ProductSpecificationRepository(null, Runnable::run); // Pass null or mock MongoTemplate object
     }
 
     @Test

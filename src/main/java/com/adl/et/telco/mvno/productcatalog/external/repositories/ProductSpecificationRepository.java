@@ -7,11 +7,13 @@ import com.adl.et.telco.mvno.productcatalog.domain.entities.ProductSpecification
 import com.adl.et.telco.mvno.productcatalog.external.repositories.utils.RepositoryUtils;
 import com.adl.et.telco.dte.mvno.plugin.tmf.domain.entities.Pageable;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Component
 public class ProductSpecificationRepository extends AbstractResourceRepository<ProductSpecification> {
@@ -24,9 +26,10 @@ public class ProductSpecificationRepository extends AbstractResourceRepository<P
             "productSpecCharacteristic.isUnique"
     );
 
-    public ProductSpecificationRepository(MongoTemplate mongoTemplate) {
+    public ProductSpecificationRepository(MongoTemplate mongoTemplate,
+                                          @Qualifier("queryExecutor") Executor queryExecutor) {
 
-        super(mongoTemplate, ProductSpecification.class);
+        super(mongoTemplate, ProductSpecification.class, queryExecutor);
     }
 
     @Override
