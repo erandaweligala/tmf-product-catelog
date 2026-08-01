@@ -22,7 +22,12 @@ springdoc:
     # url and config-url are pinned so the UI resolves them even when it is opened directly on
     # /swagger-ui/index.html instead of through the /swagger-ui.html redirect
     url: /v3/api-docs
-    config-url: /v3/api-docs/swagger-config
+    # springdoc serves this configuration from SwaggerConfigResource, whose handler returns a Map
+    # and is wrapped by the tmf-plugin LoggingAdvice, which casts the return to ResponseEntity and
+    # answers 500. Until a plugin release carrying that fix is in use, the same configuration is
+    # served as a static resource. Then drop this property together with
+    # src/main/resources/static/swagger-config.json to go back to /v3/api-docs/swagger-config.
+    config-url: /swagger-config.json
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: method

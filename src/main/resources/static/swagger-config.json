@@ -1,0 +1,8 @@
+{
+  "configUrl": "/swagger-config.json",
+  "url": "/v3/api-docs",
+  "validatorUrl": "",
+  "displayRequestDuration": true,
+  "operationsSorter": "method",
+  "tagsSorter": "alpha"
+}
