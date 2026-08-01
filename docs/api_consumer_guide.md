@@ -113,7 +113,29 @@ The service documents itself with springdoc (OpenAPI 3). With the default `serve
 These paths sit at the root of the service, they are not under
 `app.context.absolute` (`/tmf-api/productCatalogManagement/v4`).
 
-*Failed to load remote configuration* in the UI means `/v3/api-docs/swagger-config` could not be
-fetched. Check the response of that URL directly - a 404 means springdoc is not on the classpath
-or is disabled through `springdoc.api-docs.enabled`, and a 401/403 means something in front of
-the service is blocking it.
+*Failed to load remote configuration* in the UI means the configuration URL could not be fetched.
+Check the response of that URL directly - a 404 means springdoc is not on the classpath or is
+disabled through `springdoc.api-docs.enabled`, and a 401/403 means something in front of the
+service is blocking it.
+
+### Why the configuration is served from a static file
+
+springdoc answers `/v3/api-docs/swagger-config` from `SwaggerConfigResource.openapiJson`, a
+`@GetMapping` handler whose last argument is the `HttpServletRequest` and whose return value is a
+`Map`. `LoggingAdvice` in tmf-plugin 6.1 matches every such handler and casts the return value to
+`ResponseEntity`, so the request fails with a `ClassCastException` and a 500:
+
+```
+java.lang.ClassCastException: class java.util.TreeMap cannot be cast to class
+org.springframework.http.ResponseEntity
+    at ...LoggingAdvice.logResponseAndHeader(LoggingAdvice.java:236)
+    at org.springdoc.webmvc.ui.SwaggerConfigResource$$EnhancerBySpringCGLIB.openapiJson
+```
+
+`springdoc.swagger-ui.config-url` therefore points at `static/swagger-config.json`, which is
+served as a plain resource and never reaches the advice. `/v3/api-docs` itself is unaffected: its
+handler takes a `Locale` as the last argument, so the advice does not match it.
+
+The advice is fixed in the plugin - it now only matches handlers in `com.adl..*` and no longer
+requires a `ResponseEntity` return. Once a plugin release with that fix is in use, delete
+`src/main/resources/static/swagger-config.json` and the `config-url` property.
