@@ -24,7 +24,7 @@ class CategoryRepositoryTest {
 
         mockMongoTemplate = Mockito.mock(MongoTemplate.class);
 
-        mockCategoryRepository = new CategoryRepository(mockMongoTemplate);
+        mockCategoryRepository = new CategoryRepository(mockMongoTemplate, Runnable::run);
 
     }
 

@@ -23,7 +23,7 @@ class ProductOfferingPriceRepositoryTest {
     @BeforeEach
     void setUp() {
         mockMongoTemplate = Mockito.mock(MongoTemplate.class);
-        repository = new ProductOfferingPriceRepository(mockMongoTemplate);
+        repository = new ProductOfferingPriceRepository(mockMongoTemplate, Runnable::run);
     }
 
 

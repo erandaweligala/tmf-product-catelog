@@ -25,7 +25,7 @@ class PricingLogicAlgorithmRepositoryTest {
     @BeforeEach
     void setUp() {
         mockMongoTemplate = Mockito.mock(MongoTemplate.class);
-        repository = new PricingLogicAlgorithmRepository(mockMongoTemplate);
+        repository = new PricingLogicAlgorithmRepository(mockMongoTemplate, Runnable::run);
     }
 
 

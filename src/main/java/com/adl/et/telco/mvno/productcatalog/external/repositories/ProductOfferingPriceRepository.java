@@ -4,11 +4,13 @@ import com.adl.et.telco.dte.mvno.plugin.tmf.domain.entities.Filter;
 import com.adl.et.telco.dte.mvno.plugin.tmf.external.repositories.AbstractResourceRepository;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.ProductOfferingPrice;
 import com.adl.et.telco.mvno.productcatalog.external.repositories.utils.RepositoryUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Component
 public class ProductOfferingPriceRepository extends AbstractResourceRepository<ProductOfferingPrice> {
@@ -30,9 +32,10 @@ public class ProductOfferingPriceRepository extends AbstractResourceRepository<P
             "unitOfMeasure.amount"
     );
 
-    public ProductOfferingPriceRepository(MongoTemplate mongoTemplate) {
+    public ProductOfferingPriceRepository(MongoTemplate mongoTemplate,
+                                          @Qualifier("queryExecutor") Executor queryExecutor) {
 
-        super(mongoTemplate, ProductOfferingPrice.class);
+        super(mongoTemplate, ProductOfferingPrice.class, queryExecutor);
     }
 
     @Override
