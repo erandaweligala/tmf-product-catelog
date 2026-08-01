@@ -85,15 +85,12 @@
             <artifactId>json-path</artifactId>
             <version>2.4.0</version>
         </dependency>
+        <!-- Documentation is produced by springdoc, which tmf-plugin configures. Springfox must
+             not be added back: it serves its own UI and both register handlers for the doc paths. -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

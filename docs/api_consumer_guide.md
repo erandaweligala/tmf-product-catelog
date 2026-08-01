@@ -99,3 +99,21 @@ Eg:
 | Parameter | Description | Example |
 | ----------- | ----------- | --------- |
 | id | ID of the resource. | 60af164dc87b5a2d626ce0f3 |
+## API documentation endpoints
+
+The service documents itself with springdoc (OpenAPI 3). With the default `server.port: 31001`:
+
+| URL | Purpose |
+| ----------- | ----------- |
+| http://localhost:31001/swagger-ui.html | Swagger UI. Use this URL - it redirects to `/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config` |
+| http://localhost:31001/v3/api-docs | OpenAPI document as JSON |
+| http://localhost:31001/v3/api-docs.yaml | OpenAPI document as YAML |
+| http://localhost:31001/v3/api-docs/swagger-config | Bootstrap configuration that swagger-ui fetches |
+
+These paths sit at the root of the service, they are not under
+`app.context.absolute` (`/tmf-api/productCatalogManagement/v4`).
+
+*Failed to load remote configuration* in the UI means `/v3/api-docs/swagger-config` could not be
+fetched. Check the response of that URL directly - a 404 means springdoc is not on the classpath
+or is disabled through `springdoc.api-docs.enabled`, and a 401/403 means something in front of
+the service is blocking it.
