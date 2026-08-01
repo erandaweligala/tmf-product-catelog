@@ -1,0 +1,110 @@
+server:
+  port: 31001
+app:
+  host: "localhost"
+  protocol: "http"
+  port: "31001"
+  context:
+    absolute: /tmf-api/productCatalogManagement/v4
+    relative: /tmf-api/productCatalogManagement/v4
+  swagger:
+    title: Product Catalog Management
+    description: "TMF API Reference: TMF620 - Product Catalog Management"
+    version: 4.0.0
+log:
+  identifierKey: UUID
+  isDebug: true
+info:
+  app:
+    name :  base-template
+    msName : base-template
+com:
+  adl:
+    dte:
+      plugins:
+        logging:
+          enabled: true
+          level: DEBUG
+        rolling:
+          policy: size
+          size: 100000kb
+        alarming:
+          enabled: true
+        msstat:
+          enabled: false
+spring.data.mongodb:
+  #url: mongodb+srv://mongo_user:mongo_user@disaggregator.ycwop.mongodb.net/Disaggregator?retryWrites=true&w=majority
+#  uri: mongodb://mongo_user:mongo%40huawei123@119.8.190.109:27017/huawei_mongodb?authSource=huawei_mongodb
+   #uri: mongodb://adltelco:3ConjXX92EAz@localhost:27020
+   uri: mongodb://svc-product-catalog:pc18FjSe2x*X@localhost:27019/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+   #database: productcatalog
+   database: productcatalogmanagement
+server.error.include-stacktrace: always
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      failureRateThreshold: 30
+      minimumNumberOfCalls: 5
+      permittedNumberOfCallsInHalfOpenState: 3
+      waitDurationInOpenState: 5s
+      ignoreExceptions:
+        - com.adl.et.telco.dte.mvno.plugin.tmf.external.exception.AdaptorException
+        - com.adl.et.telco.dte.mvno.plugin.tmf.application.exception.type.ControllerException
+        - com.adl.et.telco.dte.mvno.plugin.tmf.domain.exception.DomainException
+        - com.adl.et.telco.dte.mvno.plugin.tmf.application.exception.type.FilterException
+        - com.adl.et.telco.dte.mvno.plugin.tmf.external.exception.RepositoryException
+        - com.adl.et.telco.dte.mvno.plugin.tmf.external.exception.WebClientException
+  instances:
+    base_query:
+      baseConfig: default
+    base_get:
+      baseConfig: default
+    base_create:
+      baseConfig: default
+    base_patch:
+      baseConfig: default
+    base_delete:
+      baseConfig: default
+
+tmf.event:
+  enabled: false
+  topic: tmf_event_kafka
+  rest:
+    listenerUrl: "http://localhost:3000/listener"
+    readTimeOut: 10000
+    connectionTimeOut: 10000
+    maxTotalConnection: 1000
+    maxTotalConnectionPerRoute: 500
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: b-2.telcomsk.aq9z29.c5.kafka.ap-southeast-1.amazonaws.com:9098,b-1.telcomsk.aq9z29.c5.kafka.ap-southeast-1.amazonaws.com:9098
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  datasource:
+    url: telcords.cvzpr5ch3n3n.ap-southeast-1.rds.amazonaws.com
+    username: adltelco
+    password: 3ConjXX92EAz
+
+tmf:
+  services:
+    apiNotifier:
+      url: "http://localhost:8094/tmf-api/apiNotifier/v4"
+#trigger#1
