@@ -1,8 +1,8 @@
 server:
   port: 31001
 app:
-  host: "a16e44fb0b7e84dc49f57706786481f9-711798147.ap-southeast-1.elb.amazonaws.com"
-  protocol: "http"
+  host: ""
+  protocol: "https"
   port: "80"
   context:
     absolute: /tmf-api/productCatalogManagement/v4
@@ -11,6 +11,22 @@ app:
     title: Product Catalog Management
     description: "TMF API Reference: TMF620 - Product Catalog Management"
     version: 4.0.0
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    url: /v3/api-docs
+
+    config-url: /swagger-config.json
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: false
 log:
   identifierKey: UUID
   isDebug: true

@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.adl.et.telco.mvno.productcatalog</groupId>
             <artifactId>productcatalog-data-model</artifactId>
-            <version>2.3</version>
+            <version>1.14</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>com.adl.et.telco.dte.mvno</groupId>
             <artifactId>tmf-plugin</artifactId>
-            <version>6.1</version>
+            <version>6.0</version>
         </dependency>
         <dependency>
             <groupId>com.adl.et.telco.dte.plugin</groupId>
