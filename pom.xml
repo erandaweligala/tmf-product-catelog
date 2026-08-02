@@ -223,7 +223,9 @@
     </repositories>
 
     <properties>
-        <java.version>1.8</java.version>
+        <!-- tmf-plugin is compiled for Java 11, so the service cannot target 8 - javac rejects the
+             plugin classes with "class file has wrong version 55.0, should be 52.0". -->
+        <java.version>11</java.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml

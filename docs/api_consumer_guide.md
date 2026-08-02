@@ -139,3 +139,16 @@ handler takes a `Locale` as the last argument, so the advice does not match it.
 The advice is fixed in the plugin - it now only matches handlers in `com.adl..*` and no longer
 requires a `ResponseEntity` return. Once a plugin release with that fix is in use, delete
 `src/main/resources/static/swagger-config.json` and the `config-url` property.
+
+## Build requirements
+
+The service is compiled for Java 11 (`java.version` in `pom.xml`), because tmf-plugin is a Java 11
+artifact. Targeting Java 8 fails the build with:
+
+```
+bad class file: .../tmf-plugin-6.x.jar(.../BaseResourceController.class)
+  class file has wrong version 55.0, should be 52.0
+```
+
+The image that builds the service therefore needs a JDK 11 or newer, and the image that runs it a
+matching JRE.
