@@ -1,7 +1,7 @@
 server:
   port: 31001
 app:
-  host: ""
+  host: "product-catelog.idte.axiatadigitallabs.com"
   protocol: "https"
   port: "80"
   context:
