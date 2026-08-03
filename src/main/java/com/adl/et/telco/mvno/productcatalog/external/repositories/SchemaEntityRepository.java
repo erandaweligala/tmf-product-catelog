@@ -35,4 +35,19 @@ public class SchemaEntityRepository extends AbstractResourceRepository<SchemaEnt
 
         return Optional.ofNullable(mongoTemplate.findOne(query, SchemaEntity.class));
     }
+
+    /**
+     * Get a schema by name only. Used by the validation API when the caller does not know the
+     * schema type of the document it is validating.
+     *
+     * @param name name of the schema.
+     * @return Matching schema, the first one when several schema types share the name.
+     */
+    @Override
+    public Optional<SchemaEntity> getByName(String name) {
+
+        Query query = new Query().addCriteria(Criteria.where("name").is(name));
+
+        return Optional.ofNullable(mongoTemplate.findOne(query, SchemaEntity.class));
+    }
 }

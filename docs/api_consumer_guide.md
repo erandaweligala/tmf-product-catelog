@@ -99,6 +99,59 @@ Eg:
 | Parameter | Description | Example |
 | ----------- | ----------- | --------- |
 | id | ID of the resource. | 60af164dc87b5a2d626ce0f3 |
+## Schema validation API
+
+Schemas are stored in this catalog and a document can be validated against them without storing
+it. Service Catalog Management validates the values of its specification characteristics through
+this API instead of keeping its own copy of the schemas.
+
+### HTTP request
+
+POST {baseURL}/schema/validate with request body
+
+Eg:
+> http://localhost:31001/tmf-api/productCatalogManagement/v4/schema/validate
+
+```json
+{
+  "schemaType": "ValueType",
+  "name": "MobileService",
+  "data": {
+    "@baseType": "ValueType",
+    "@type": "MobileService",
+    "msisdn": "0771234567"
+  }
+}
+```
+
+| Field | Description |
+| ----------- | ----------- |
+| schemaType | Schema type of the schema. Optional, falls back to `@baseType` of `data`. When neither is given the schema is matched by name only. |
+| name | Name of the schema. Optional, falls back to `@type` of `data`. |
+| data | Document to validate. Required. |
+
+### Response
+
+The call answers 200 whenever the request itself is well formed. A document that breaks its
+schema and a schema that is not loaded are both reported in the body, only a request without a
+schema name or without data is answered with an error status.
+
+```json
+{
+  "valid": false,
+  "schemaFound": true,
+  "schemaType": "ValueType",
+  "name": "MobileService",
+  "errors": ["$.msisdn - integer found, string expected"]
+}
+```
+
+| Field | Description |
+| ----------- | ----------- |
+| valid | True when the document matches the schema. False when it does not, and when no schema was found. |
+| schemaFound | False when no schema is stored for the given schema type and name. |
+| errors | Validation errors, empty when the document is valid. |
+
 ## API documentation endpoints
 
 The service documents itself with springdoc (OpenAPI 3). With the default `server.port: 31001`:

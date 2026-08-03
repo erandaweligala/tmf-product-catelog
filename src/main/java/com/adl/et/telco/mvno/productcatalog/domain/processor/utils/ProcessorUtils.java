@@ -6,16 +6,10 @@ import com.adl.et.telco.dte.mvno.plugin.tmf.domain.entities.BaseResourceDocument
 import com.adl.et.telco.dte.mvno.plugin.tmf.domain.exception.DomainException;
 import com.adl.et.telco.dte.plugin.logging.services.LoggingUtils;
 import com.adl.et.telco.mvno.productcatalog.domain.boundary.JsonSubResourceRepositoryInterface;
-import com.adl.et.telco.mvno.productcatalog.domain.boundary.SchemaEntityRepositoryInterface;
 import com.adl.et.telco.mvno.productcatalog.domain.boundary.SubResourceRepositoryInterface;
+import com.adl.et.telco.mvno.productcatalog.domain.dto.SchemaValidationResult;
 import com.adl.et.telco.mvno.productcatalog.domain.entities.BaseSubResourceDocument;
-import com.adl.et.telco.mvno.productcatalog.domain.entities.SchemaEntity;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
+import com.adl.et.telco.mvno.productcatalog.domain.service.SchemaValidationService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -24,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 @Component
 public class ProcessorUtils {
@@ -37,17 +30,15 @@ public class ProcessorUtils {
 
     private final ModelMapper mapper;
     private final UrlResolverAdaptorInterface urlResolver;
-    private final SchemaEntityRepositoryInterface schemaRepository;
-    private final ObjectMapper objectMapper;
+    private final SchemaValidationService schemaValidationService;
     private final HttpServletRequest httpServletRequest;
 
     public ProcessorUtils(ModelMapper mapper, UrlResolverAdaptorInterface urlResolver,
-                          SchemaEntityRepositoryInterface schemaRepository, ObjectMapper objectMapper, HttpServletRequest httpServletRequest) {
+                          SchemaValidationService schemaValidationService, HttpServletRequest httpServletRequest) {
 
         this.mapper = mapper;
         this.urlResolver = urlResolver;
-        this.schemaRepository = schemaRepository;
-        this.objectMapper = objectMapper;
+        this.schemaValidationService = schemaValidationService;
         this.httpServletRequest = httpServletRequest;
     }
 
@@ -135,44 +126,15 @@ public class ProcessorUtils {
 
     public void validateBySchema(Map<String, Object> json, String baseType, String type, String typeName) {
 
-        SchemaEntity schema = schemaRepository.get(baseType, type)
-                .orElseThrow(() -> new DomainException("No schema for " + typeName + " with types " + baseType + "/" + type));
+        SchemaValidationResult result = schemaValidationService.validate(baseType, type, json);
 
-        JsonSchemaFactory schemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
-
-        JsonSchema jsonSchema;
-        try {
-            jsonSchema = schemaFactory.getSchema(objectMapper.writeValueAsString(schema.getSchema()));
-        } catch (JsonProcessingException e) {
-            throw new DomainException("Could not read schema for " + typeName);
+        if (!result.isSchemaFound()) {
+            throw new DomainException("No schema for " + typeName + " with types " + baseType + "/" + type);
         }
 
-        try {
-            Set<ValidationMessage> errors = jsonSchema
-                    .validate(objectMapper.readTree(objectMapper.writeValueAsString(json)));
-
-            if (!errors.isEmpty()) {
-                throw new DomainException("Invalid schema with errors for " + typeName +
-                        " : " + formatSchemaErrors(errors));
-            }
-        } catch (JsonProcessingException e) {
-            throw new DomainException("Could not read json for " + typeName);
+        if (!result.isValid()) {
+            throw new DomainException("Invalid schema with errors for " + typeName +
+                    " : " + String.join(", ", result.getErrors()));
         }
-    }
-
-    private String formatSchemaErrors(Set<ValidationMessage> validationMessages) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        validationMessages.forEach(validationMessage -> {
-            if (!stringBuilder.toString().isEmpty()) {
-                stringBuilder.append(", ");
-            }
-            stringBuilder.append(validationMessage.getPath());
-            stringBuilder.append(" - ");
-            stringBuilder.append(validationMessage.getMessage());
-        });
-
-        return stringBuilder.toString();
     }
 }
