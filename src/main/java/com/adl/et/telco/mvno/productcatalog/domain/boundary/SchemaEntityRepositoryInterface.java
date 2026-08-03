@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface SchemaEntityRepositoryInterface extends ResourceRepositoryInterface<SchemaEntity> {
 
     Optional<SchemaEntity> get(String schemaType, String name);
+
+    Optional<SchemaEntity> getByName(String name);
 }
