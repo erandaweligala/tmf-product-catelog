@@ -129,4 +129,16 @@ tmf:
   services:
     apiNotifier:
       url: "http://localhost:8094/tmf-api/apiNotifier/v4"
+
+# CORS rules applied to every endpoint. Narrow allowed-origins to the origins of the applications
+# that call this service. Patterns are supported, for example https://*.example.com. Credentials
+# are off, turn them on only together with a list of concrete origins.
+cors:
+  allowed-origins: "*"
+  allowed-methods: "GET,POST,PATCH,PUT,DELETE,OPTIONS,HEAD"
+  allowed-headers: "*"
+  # A browser only reads the response headers that are exposed, these two carry the paging counts.
+  exposed-headers: "X-Total-Count,X-Result-Count"
+  allow-credentials: false
+  max-age: 1800
 #trigger#1
